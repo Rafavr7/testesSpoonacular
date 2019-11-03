@@ -1,46 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pt.iade.andre.cooking.testesandrecooking;
 
-import java.util.List;
-import pt.iade.andre.cooking.testesandrecooking.model.Recipe;
-import pt.iade.andre.cooking.testesandrecooking.provider.SpoonacularAPI2;
+import pt.iade.andre.cooking.testesandrecooking.exceptions.BadRequestException;
+import pt.iade.andre.cooking.testesandrecooking.model.Ingredient;
+import pt.iade.andre.cooking.testesandrecooking.provider.IngedientsProvider;
 
 /**
  *
- * @author rv_ra
+ * @author Rafael Vieira Rangel
  */
 public class Main {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws Exception {
-        // TODO code application logic here
-        List<Recipe> apiResponse = SpoonacularAPI2.getRandomRecipe();
-        
-        /*if(apiResponse != null) {
-            System.out.println("Recipe title: " + apiResponse.getRecipeTitle());
-            System.out.println("Recipe preparation time: " + apiResponse.getPreparationMinutes());
-            System.out.println("Recipe cooking time: " + apiResponse.getCookingMinutes());
-        }
-        else {
-            System.err.println("Retornou null!");
-        }*/
-        
-        if(apiResponse != null) {
-            System.out.println("List size: " + apiResponse.size());
-            for(Recipe rcp : apiResponse) {
-                System.out.println("Recipe title: " + rcp.getRecipeTitle());
-                System.out.println("Recipe preparation time: " + rcp.getPreparationMinutes());
-                System.out.println("Recipe cooking time: " + rcp.getCookingMinutes());
+    
+    public static void main(String[] args) {
+        try {
+            Ingredient[] ingredients = IngedientsProvider.getIngredientSuggestions("appl", 3, true, null);
+            if(ingredients != null) {
+                System.out.println("Ingredients Array Size: " + ingredients.length);
+                for(Ingredient ing : ingredients) {
+                    System.out.println(ing);
+                }
             }
         }
-        else {
-            System.err.println("Resposta 'null'");
+        catch (BadRequestException ex) {
+            System.err.println(ex.getMessage() + ex);
         }
     }
     
